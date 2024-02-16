@@ -1,10 +1,6 @@
 package com.allendowney.thinkdast;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * @author downey
@@ -45,7 +41,15 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public boolean add(T element) {
 		// TODO: FILL THIS IN!
-		return false;
+		if (size >= array.length) {
+			//큰 배열을 만들고 요소를 복사
+			T[] bigger = (T[]) new Object[array.length * 2];
+			System.arraycopy(array, 0, bigger, 0, array.length);
+			array = bigger;
+		}
+		array[size] = element;
+		size++;
+		return true;
 	}
 
 	@Override
@@ -111,6 +115,9 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public int indexOf(Object target) {
 		// TODO: FILL THIS IN!
+		for(int i=0;i<size;i++){
+			if(Objects.equals(array[i],target)) return i;
+		}
 		return -1;
 	}
 
@@ -182,7 +189,30 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public T remove(int index) {
 		// TODO: FILL THIS IN!
-		return null;
+
+		//배열 인덱스 범위를 벗어난경우
+		if (index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException();
+		}
+
+		T removedElement = array[index];
+
+		// 요소를 왼쪽으로 이동. 제일 끝값인 경우에는 알아서 실행 x ex)index가 2, size가 3인경우
+		for (int i = index; i < size - 1; i++) {
+			array[i] = array[i + 1];
+		}
+		//앞으로 다 땡겼으면 마지막 인덱스에는 null 대입
+		array[size - 1] = null;
+		size--;
+		return removedElement;
+
+		// 저자코드 인데, null 대입 x 그냥 size만 가지고 노네.. 메모리 누수 걱정없나..?
+//		T element = get(index);
+//		for (int i=index; i<size-1; i++) {
+//			array[i] = array[i+1];
+//		}
+//		size--;
+//		return element;
 	}
 
 	@Override
@@ -202,7 +232,27 @@ public class MyArrayList<T> implements List<T> {
 	@Override
 	public T set(int index, T element) {
 		// TODO: FILL THIS IN!
-		return null;
+		//1. 범위에 없는 인덱스인경우 에러발생시키기
+//		//1-1. 해당 인덱스의 요소가 instanceof T 했을때.. --> 애초에 T타입으로 만드니까 상관 x 지네릭스가 런타임에러를 컴파일 타임에 잡아주잖아..
+//		if(index < 0 ||index >= size) {
+//			throw new IndexOutOfBoundsException();
+//		}
+//			//2. 해당 인덱스에 요소가 있는경우, 그걸 tmp에 저장해두고, 그 인덱스에 element넣고 tmp반환.
+//		else if(array[index] != null) {
+//			T tmp = array[index];
+//			array[index] = element;
+//			return tmp;
+//		}else{
+//			//3. 해당인덱스에 요소가 없는 경우 그냥 해당 인덱스에 element넣고 null반환
+//			array[index] = element;
+//			return null;
+//		}
+
+		//저자 코드. 기존 메서드를 활용하니 코드가 깔끔..
+		// no need to check index; get will do it for us
+		T old = get(index);
+		array[index] = element;
+		return old;
 	}
 
 	@Override

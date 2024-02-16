@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 import static org.hamcrest.CoreMatchers.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -194,8 +195,8 @@ public class MyArrayListTest {
 		boolean flag = mylist.remove(new Integer(2));
 		assertThat(flag, equalTo(true));
 		assertThat(mylist.size(), is(2));
-		assertThat(mylist.get(1), is(new Integer(3)));
-		//System.out.println(Arrays.toString(mal.toArray()));
+		assertThat(mylist.get(1), is(3));
+		//System.out.println(Arrays.toString(mylist.toArray()));
 
 		flag = mylist.remove(new Integer(1));
 		assertThat(flag, equalTo(true));
