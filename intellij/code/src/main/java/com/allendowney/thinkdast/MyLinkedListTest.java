@@ -27,4 +27,5 @@ public class MyLinkedListTest extends MyArrayListTest {
 		mylist = new MyLinkedList<Integer>();
 		mylist.addAll(list);
 	}
+
 }

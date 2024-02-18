@@ -38,14 +38,20 @@ public class MyArrayList<T> implements List<T> {
 		System.out.println(Arrays.toString(mal.toArray()) + " size = " + mal.size);
 	}
 
+
+/*
+분할상환분석(amortized analusis)
+배열의 크기를 조정할때마다 배열의 길이가 2배로 는다. 이것으로 각 요소를 복사하는 횟수를 제한.
+*/
 	@Override
 	public boolean add(T element) {
 		// TODO: FILL THIS IN!
+		//필요한 순간에 늘리기..
 		if (size >= array.length) {
 			//큰 배열을 만들고 요소를 복사
-			T[] bigger = (T[]) new Object[array.length * 2];
-			System.arraycopy(array, 0, bigger, 0, array.length);
-			array = bigger;
+			T[] biggerArray= (T[]) new Object[array.length * 2];
+			System.arraycopy(array, 0, biggerArray, 0, array.length);
+			array = biggerArray;
 		}
 		array[size] = element;
 		size++;
@@ -190,29 +196,29 @@ public class MyArrayList<T> implements List<T> {
 	public T remove(int index) {
 		// TODO: FILL THIS IN!
 
-		//배열 인덱스 범위를 벗어난경우
-		if (index < 0 || index >= size) {
-			throw new IndexOutOfBoundsException();
-		}
-
-		T removedElement = array[index];
-
-		// 요소를 왼쪽으로 이동. 제일 끝값인 경우에는 알아서 실행 x ex)index가 2, size가 3인경우
-		for (int i = index; i < size - 1; i++) {
-			array[i] = array[i + 1];
-		}
-		//앞으로 다 땡겼으면 마지막 인덱스에는 null 대입
-		array[size - 1] = null;
-		size--;
-		return removedElement;
-
-		// 저자코드 인데, null 대입 x 그냥 size만 가지고 노네.. 메모리 누수 걱정없나..?
-//		T element = get(index);
-//		for (int i=index; i<size-1; i++) {
-//			array[i] = array[i+1];
+//		//배열 인덱스 범위를 벗어난경우
+//		if (index < 0 || index >= size) {
+//			throw new IndexOutOfBoundsException();
 //		}
+//
+//		T removedElement = array[index];
+//
+//		// 해당 인덱스 이후의 요소를 왼쪽으로 한칸씩 이동.
+//		for (int i = index; i < size - 1; i++) {
+//			array[i] = array[i + 1];
+//		}
+//		//앞으로 다 땡겼으면 마지막 인덱스에는 null 대입
+//		array[size - 1] = null;
 //		size--;
-//		return element;
+//		return removedElement;
+
+		// 저자코드 인데, null 대입 x 그냥 size만 가지고 노네.
+		T element = get(index);
+		for (int i=index; i<size-1; i++) {
+			array[i] = array[i+1];
+		}
+		size--;
+		return element;
 	}
 
 	@Override
@@ -239,16 +245,16 @@ public class MyArrayList<T> implements List<T> {
 //		}
 //			//2. 해당 인덱스에 요소가 있는경우, 그걸 tmp에 저장해두고, 그 인덱스에 element넣고 tmp반환.
 //		else if(array[index] != null) {
-//			T tmp = array[index];
+//			T oldElement = array[index];
 //			array[index] = element;
-//			return tmp;
+//			return oldElement;
 //		}else{
 //			//3. 해당인덱스에 요소가 없는 경우 그냥 해당 인덱스에 element넣고 null반환
 //			array[index] = element;
 //			return null;
 //		}
 
-		//저자 코드. 기존 메서드를 활용하니 코드가 깔끔..
+		//저자 코드. 기존 메서드를 활용하니 코드가 깔끔.
 		// no need to check index; get will do it for us
 		T old = get(index);
 		array[index] = element;
