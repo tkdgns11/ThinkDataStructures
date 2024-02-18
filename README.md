@@ -1,1 +1,1 @@
-자바 자료구조 실습
+data_structures_study
