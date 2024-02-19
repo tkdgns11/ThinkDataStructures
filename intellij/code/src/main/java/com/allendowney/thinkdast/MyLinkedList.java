@@ -288,7 +288,7 @@ public class MyLinkedList<E> implements List<E> {
 //
 //		return targetNode.data;
 
-		//저자 코드. 공통 작업을 밖으로 빼니까 코드가 간결.  
+		//저자 코드. 공통 작업을 밖으로 빼니까 코드가 간결. getNode(index)에 IndexOutOfBoundsException() 체크하고 이걸 활용.
 		E element = get(index);
 		if (index == 0) {
 			head = head.next;

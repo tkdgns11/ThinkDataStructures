@@ -58,6 +58,7 @@ public class MyArrayList<T> implements List<T> {
 		return true;
 	}
 
+	//배열 크기 조정을 add(element)가 해주니까 이걸 활용.
 	@Override
 	public void add(int index, T element) {
 		if (index < 0 || index > size) {
